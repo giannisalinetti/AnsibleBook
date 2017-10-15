@@ -1,0 +1,65 @@
+---
+- name: Customize virtual hosts
+  hosts: localhost
+  vars:
+    web_pkg: httpd
+    web_svc: httpd
+    vhost:
+      port: 8080
+      srv_name: www.example.com
+      srv_alias: example.com
+      docroot: /srv/example/www
+      logdir: /srv/example/www/logs
+      errorlog: /srv/example/www/logs/error.log
+      customlog: /srv/example/www/logs/custom.log
+  tasks:
+    - name: Ensure {{ web_pkg }} is installed
+      yum:
+        name: "{{ web_pkg }}"
+        state: latest
+    - name: Ensure {{ web_svc }} is running
+      service:
+        name: "{{ web_svc }}"
+        state: started
+        enabled: true
+    - name: Ensure content folder is created
+      file:
+        path: "{{ vhost.docroot }}"
+        owner: root
+        group: root
+        mode: 0755
+        seuser: system_u
+        setype: httpd_sys_content_t
+        state: directory
+    - name: Ensure logs folder is created
+      file:
+        path: "{{ vhost.logdir }}"
+        owner: root
+        group: root
+        mode: 0755
+        seuser: system_u
+        setype: httpd_log_t
+        state: directory
+    - name: Ensure web content is created
+      template:
+        src: templates/index.html.j2
+        dest: "{{ vhost.docroot }}/index.html"
+        owner: root
+        group: root
+        mode: 0644
+    - name: Ensure custom vhost is configured
+      template:
+        src: templates/vhost_template.j2
+        dest: /etc/httpd/conf.d/example.conf
+        owner: root
+        group: root
+        mode: 0644
+      notify:
+        - restart_httpd
+
+  handlers:
+    - name: restart_httpd
+      service:
+        name: "{{ web_svc }}"
+        state: restarted
+

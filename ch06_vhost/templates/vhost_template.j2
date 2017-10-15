@@ -1,0 +1,16 @@
+{% if vhost.port is defined and vhost.port != 80 %}
+Listen {{ vhost.port|default('80') }}
+{% endif %}
+
+<VirtualHost {{ ansible_default_ipv4.address }}:{{ vhost.port|default('80') }}>
+    ServerName {{ vhost.srv_name }}
+    ServerAlias {{ vhost.srv_alias }}
+    DocumentRoot {{ vhost.docroot }}
+    <Directory "{{ vhost.docroot }}">
+        Require all granted
+        AllowOverride None
+    </Directory>
+    ErrorLog {{ vhost.errorlog }}
+    CustomLog {{ vhost.customlog }} combined
+</VirtualHost>
+
