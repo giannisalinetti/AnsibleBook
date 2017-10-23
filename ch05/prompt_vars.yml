@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  vars:
+    topic: "music"
+
+  vars_prompt:
+    - name: "genre"
+      prompt: "Choose the musical genre"
+      private: no
+
+    - name: "artist"
+      prompt: "Choose the artist name"
+      private: no
+
+  tasks:
+    - name: Ensure directories are created
+      file:
+        path: "/tmp/{{ topic }}/{{ genre }}/{{ artist }}"
+        state: directory
+        mode: 0755
