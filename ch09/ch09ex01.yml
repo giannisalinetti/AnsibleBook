@@ -1,0 +1,5 @@
+---
+- name: First role test
+  hosts: devhosts
+    roles:
+      - godev

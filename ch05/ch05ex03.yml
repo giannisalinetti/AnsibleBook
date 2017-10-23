@@ -1,0 +1,14 @@
+- hosts: all
+  vars_files:
+    - vars/user_vars.yaml
+  vars:
+    secgroups: wheel
+  tasks:
+    - name: Create user {{ username }}
+      user:
+        name: "{{ username }}"
+        comment: "{{ first_name }} {{ last_name }}"
+        shell: "{{ shell }}"
+        home: "{{ home }}"
+        groups: "{{ secgroups }}"
+        append: yes

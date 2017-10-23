@@ -13,10 +13,9 @@
         path: "{{ remote_dir }}"
         state: directory
         mode: 0755
-    - name: Deploy custom facts
+    - name: Deploy custom facts files
       copy:
         src: "{{ item }}"
         dest: "{{ remote_dir }}/{{ item }}"
         mode: 0755
-      with_items: "{{ fact_files }}"
-
+      with_items: "{{ facts_files }}"

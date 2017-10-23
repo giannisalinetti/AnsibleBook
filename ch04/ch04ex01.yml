@@ -1,0 +1,24 @@
+---
+- username: jmoore
+  uid: 1001
+  gid: 1001
+  shell: "/bin/bash"
+  groups:
+    - operators
+    - wheel
+  info:
+    name: John
+    lastname: Moore
+    comment: "Operation user"
+
+- username: pblack
+  uid: 1002
+  gid: 1002
+  shell: "/bin/bash"
+  groups:
+    - developers
+  info:
+    name: Paul
+    lastname: Black
+    comment: "Developer user"
+

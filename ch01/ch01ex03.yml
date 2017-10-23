@@ -1,0 +1,17 @@
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Package httpd is installed
+      yum:
+        name: httpd
+        State: latest
+    - name: Apache default port is 8080
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listenr'
+        line: 'Listen 8080r'
+    - name: Service is started and enabled
+      service:
+        name: httpd
+        state: started
+        enabled: true  

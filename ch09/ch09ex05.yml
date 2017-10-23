@@ -1,0 +1,13 @@
+---
+- name: First role test
+  hosts: devhosts
+  tasks:
+    - debug:
+        msg: A role is going to be processed
+    - import_role:
+        name: godev
+      vars:
+        install_golang_src: true
+      when: "ansible_os_family" == "RedHat"
+    - debug:
+        msg: A role has just been processed

@@ -1,6 +1,8 @@
 ---
 - name: Customize virtual hosts
-  hosts: localhost
+  hosts: all
+  remote_user: ansible
+  become: true
   vars:
     web_pkg: httpd
     web_svc: httpd
@@ -40,7 +42,7 @@
         seuser: system_u
         setype: httpd_log_t
         state: directory
-    - name: Ensure web content is created
+    - name: Ensure content folder is created
       template:
         src: templates/index.html.j2
         dest: "{{ vhost.docroot }}/index.html"

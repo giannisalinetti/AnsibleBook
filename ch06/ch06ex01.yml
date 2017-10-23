@@ -1,0 +1,46 @@
+---
+- name: Web server configuration
+  hosts: all
+  vars:
+    web_pkg: nginx
+    web_svc: nginx
+    fw_rule_http: http
+    fw_rule_https: https
+    cfg_src: default.conf
+    cfg_dest: /etc/nginx/conf.d/default.conf
+    
+  tasks:
+    - name: Ensure {{ web_pkg }} is installed
+      yum:
+        name: "{{ web_pkg }}"
+        state: present
+
+    - name: Ensure firewall rules are enforced
+      firewalld:
+        service: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      with_items:
+        - "{{ fw_rule_http }}"
+        - "{{ fw_rule_https }}"
+
+    - name: Ensure {{ web_svc }} is started
+      service:
+        name: "{{ web_svc }}"
+        state: started
+        enabled: true
+
+    - name: Ensure configuration is updated
+      copy:
+        src: "{{ cfg_src }}"
+        dest: "{ cfg_dest }}"
+        mode: 0644
+      notify:
+        - restart_svc
+
+  handlers:
+    - name: restart_svc
+      service:
+        name: "{{ web_svc }}"
+        state: restarted

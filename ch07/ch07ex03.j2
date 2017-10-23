@@ -1,0 +1,12 @@
+This is a {{ ansible_os_family }} system.
+Hostname: {{ ansible_fqdn }}
+IPv4: {{ ansible_default_ipv4.address }}
+{% if ansible_distribution == ‘RedHat’ and ansible_distribution_major_version == 7 %}
+This is a RHEL 7 system: ELS support will begin on July 1st 2024.
+{% if ansible_distribution == ‘RedHat’ and ansible_distribution_major_version == 6 %}
+This is a RHEL 6 system: ELS support will begin on December 1st 2020.
+{% elif ansible_distribution == ‘RedHat’ and ansible_distribution_major_version == 5 %}
+This is a RHEL 5 system: ELS support has entered on April 1st 2017 and will end on December 1st 2020.
+{% else %}
+This system is not a RHEL based distribution.
+{% endif %}

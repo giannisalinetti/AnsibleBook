@@ -1,0 +1,13 @@
+---
+- name: Variable scope demonstration
+  hosts: all
+  vars:
+    db_pkg: mariadb-server
+  tasks:
+    - name: Ensure {{ db_pkg }} is installed
+      yum:
+        name: "{{ db_pkg }}"
+        state: latest
+    - include_tasks: webserver.yml
+      vars:
+        web_pkg: httpd

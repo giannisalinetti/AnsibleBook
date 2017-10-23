@@ -1,0 +1,40 @@
+---
+- hosts: webservers
+  remote_user: ansible
+  become: true
+  serial: 1
+  vars:
+    web_svc: httpd
+  tasks:
+    - name: Disable {{ inventory_hostname }} in the app lb pool
+      haproxy:
+        state: disabled
+        host: "{{ inventory_hostname }}"
+        backend: app
+        socket: /var/lib/haproxy/stats
+        wait: yes
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['lbserver'] }}"
+
+    - name: Deploy new version of index.html
+      template:
+        src: index-ver1.html.j2
+        dest: /var/www/html/index.html
+      register: pageupgrade
+
+
+    - name: Service is restarted
+      service: 
+        name: "{{ web_svc }}"
+        state: restarted
+      when: pageupgrade.changed
+
+    - name: Enable {{ inventory_hostname }} in the app lb pool
+      haproxy:
+        state: enabled
+        host: "{{ inventory_hostname }}"
+        backend: app
+        socket: /var/lib/haproxy/stats
+        wait: yes
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['lbserver'] }}"

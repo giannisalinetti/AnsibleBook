@@ -1,0 +1,5 @@
+---
+- name: First role test
+  hosts: devhosts
+  roles:
+    - { role: godev, install_golang_src: true}

@@ -1,0 +1,16 @@
+---
+- name: Update web servers
+  hosts: webservers
+  serial: 1
+  vars:
+    web_pkg: nginx
+    web_svc: nginx
+  tasks:
+    - name: Update {{ web_pkg }} package
+      yum:
+        name: "{{ web_pkg }}"
+        state: latest
+    - name: Restart {{ web_svc }} service
+      service:
+        name: "{{ web_svc }}"
+        state: restarted

@@ -1,0 +1,7 @@
+---
+- name: Include demonstration
+  hosts: all
+  tasks:
+    - include_tasks: setup.yml
+    - include_tasks: configure.yml
+    - include_tasks: verify.yml

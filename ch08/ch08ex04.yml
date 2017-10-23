@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  become: false
+  vars:
+    filename:  https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso
+    local_dest: /tmp/debian_netinst.iso
+  tasks:
+    - name: Debian 9.2 netinst image download
+      get_url:
+        url: "{{ filename }}"
+        dest: "{{ local_dest }}"
+        mode: 0644
+      async: 1800
+      poll: 5

@@ -1,8 +1,0 @@
----
-- hosts: localhost
-  vars:
-    value: 255
-  tasks:
-    - debug:
-        msg: "{{ '%0x' % value | int }}"
-  

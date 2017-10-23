@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: false
+  vars:
+  tasks:
+    - name: Create and empty image file
+      command: dd if=/dev/zero of=/tmp/test.img bs=1M count=1000
+      async: 1
+      poll: 0
+      register: result
+      ignore_errors: true
+    - name: Print debug info
+      debug:
+        var: result

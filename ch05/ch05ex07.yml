@@ -1,0 +1,12 @@
+- hosts: all
+  remote_user: ansible
+  become: true
+  tasks:
+    - name: Create user with a loop
+      user:
+        name: "{{ item.username }}"
+        uid: "{{ item.uid }}"
+      with_items:
+        - { username: bbanner, uid: 1500 }
+        - { username: pparker, uid: 1501 }
+        - { username: tstark, uid: 1502 }

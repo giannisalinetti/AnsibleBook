@@ -1,0 +1,12 @@
+- name: "Package management"
+  hosts: all
+  tasks:
+    - name: "Ensure base packages are present"
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ base_packages }}"
+        - git
+        - vim
+        - bind-utils
+        - python-setuptools

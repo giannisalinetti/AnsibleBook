@@ -1,0 +1,16 @@
+---
+- name: Ensure rpm package are installed
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+    - httpd
+    - mod_ssl
+    - python-pip
+  - mod_wsgi
+
+- name: Ensure Python packages are installed
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - django

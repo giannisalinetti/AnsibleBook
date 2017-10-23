@@ -1,0 +1,14 @@
+- hosts: all
+  vars:
+    username: jdoe
+    first_name: John
+    last_name: Doe
+    shell: /bin/zsh
+    home: /home/{{ username }}
+  tasks:
+    - name: Create user {{ username }}
+      user:
+        name: "{{ username }}"
+        comment: "{{ first_name }} {{ last_name }}"
+        shell: "{{ shell }}"
+        home: "{{ home }}"

@@ -1,0 +1,4 @@
+---
+install_golang: true
+install_golang_src: false
+install_golang_extras: false

@@ -1,0 +1,19 @@
+- name: This playbook needs admin privileges
+  hosts: all
+  remote_user: operator
+  become: true
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: Backup grub2 configuration
+      command: cp /boot/grub2/grub.cfg /var/tmp/grub.cfg.old
+
+    - name: Update grub2 configuration
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
+      register: command_result
+
+    - name: Print result
+      debug:
+        var: command_result.stderr
+      when: command_result.rc == 0
+

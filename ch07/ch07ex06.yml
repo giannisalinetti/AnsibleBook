@@ -1,18 +1,16 @@
 ---
-- name: User creation 
-  hosts: localhost
+- name: User creation
+  hosts: all
   vars:
     user_name: john
     user_pwd: changeme
     user_shell: /bin/bash
     user_groups: wheel
   tasks:
-    - name: Ensure user {{ user_name }} is created
-      user: 
+    - name: User {{ user_name }} is created
+      user:
         name: "{{ user_name }}"
         password: "{{ user_pwd | password_hash('sha512') }}"
         shell: "{{ user_shell }}"
         groups: "{{ user_groups }}"
         append: true
-      
- 

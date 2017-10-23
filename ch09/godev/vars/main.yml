@@ -1,0 +1,15 @@
+---
+common_pkgs:
+  - vim-common
+  - vim-enhanced
+  - git
+  - tree
+go_pkgs:
+  - golang
+  - vim-go
+  - golang-docs
+go_src:
+  - golang-src
+go_extras:
+  - golang-vet
+  - golang-misc

@@ -1,0 +1,34 @@
+---
+- name: Simple yum update playbook
+  hosts: webservers
+  remote_user: ansible
+  become: true
+  serial: 1
+  tasks:
+    - name: Exec yum update
+      yum:
+        name: "*"
+        state: latest
+      register: yum_update
+
+    - name: Print the update result
+      debug:
+        var: yum_update
+
+    - name: Reboot the server
+      shell: sleep 2 && shutdown -r now
+      async: 1
+      poll: 0
+      ignore_errors: true
+      when: "'kernel' in yum_update.results[0]"
+
+    - name: Verify if the host has rebooted
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+        delay: 25
+        timeout: 200
+      become: false
+      delegate_to: localhost
+      when: "'kernel' in yum_update.results[0]"

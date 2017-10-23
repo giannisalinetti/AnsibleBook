@@ -1,0 +1,29 @@
+---
+- name: "Define web services"
+  hosts: webservers
+  tasks:
+    - name: "Package httpd is installed"
+      yum:
+        name: httpd
+        state: latest
+
+    - name: "Service httpd is started and enabled"
+      service:
+        name: httpd
+        state: started
+        enabled: true
+     
+    - name: "Web content is defined"
+      copy:
+        content: "Hello Ansible!"
+        dest: /var/www/html/index.html
+
+- name: "Test web services"
+  hosts: localhost
+  tasks:
+    - name: "Web service is available"
+      uri:
+        url: "http://{{ item }}"
+        status_code: 200
+      with_items: "{{ groups['webservers'] }}"
+

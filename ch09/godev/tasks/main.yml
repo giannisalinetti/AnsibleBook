@@ -1,0 +1,27 @@
+---
+- name: Ensure common packages are installed
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ common_pkgs }}"
+
+- name: Install golang runtimes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ go_pkgs }}"
+  when: install_golang
+
+- name: Install compiler sources
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ go_src }}"
+  when: install_golang_src
+
+- name: Install extras
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ go_extras }}"
+  when: install_golang_extras

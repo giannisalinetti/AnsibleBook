@@ -7,10 +7,11 @@ Listen {{ vhost.port|default('80') }}
     ServerAlias {{ vhost.srv_alias }}
     DocumentRoot {{ vhost.docroot }}
     <Directory "{{ vhost.docroot }}">
-        Require all granted
-        AllowOverride None
+        Options FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        Allow from all
     </Directory>
     ErrorLog {{ vhost.errorlog }}
     CustomLog {{ vhost.customlog }} combined
 </VirtualHost>
-

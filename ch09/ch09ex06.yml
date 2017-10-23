@@ -1,0 +1,5 @@
+- src: ahuffman.k8s-master
+- src: https://git.example.com/lab/k8snodes.git
+  name: k8s_nodes
+- src http://content.example.com/k8sapps.tar.gz
+  name: k8s_custom_apps

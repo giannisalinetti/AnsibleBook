@@ -1,0 +1,11 @@
+---
+- name: First role test
+  hosts: devhosts
+  pre_tasks:
+    - debug:
+        msg: A role is going to be processed
+  roles:
+    - { role: godev, install_golang_src: true}
+  post_tasks:
+    - debug:
+        msg: A role has just been processed
