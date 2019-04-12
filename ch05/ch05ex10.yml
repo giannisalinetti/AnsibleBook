@@ -1,33 +1,21 @@
 ---
-- name: Tag based deployment
-  hosts: webservers
+- hosts: all
+  remote_user: devops
+  become: true
   vars:
-    docroot: /var/www/html
-    giruri: https://git.example.com/custom/app.git
+    remote_dir: /etc/ansible/facts.d
+    facts_files:
+      - custom_uptime.py
+      - logged_users.sh
   tasks:
-  - name: App deployment
-    git:
-      repo: "{{ gituri }}"
-      dest: "{{ docroot }}"
-      version: v1.8-alpha
-    tags: unstable
-  - name: Customize Welcome message
-    lineinfile:
-      path: "{{ docroot }}"/app/welcome.php
-      state: present
-      regexp: '^Welcome to\s'
-      line: 'Welcome to the alpha version'
-    tags: unstable
-  - name: App deployment
-    git:
-      repo: "{{ gituri }}"
-      dest: "{{ docroot }}"
-      version: v1.7.4
-    tags: stable
-  - name: Customize Welcome message
-    lineinfile:
-      path: "{{ docroot }}"/app/welcome.php
-      state: present
-      regexp: '^Welcome to\s'
-      line: 'Welcome to the stable version'
-    tags: stable
+    - name: Ensure remote dir is present
+      file:
+        path: "{{ remote_dir }}"
+        state: directory
+        mode: 0755
+    - name: Deploy custom facts files
+      copy:
+        src: "{{ item }}"
+        dest: "{{ remote_dir }}/{{ item }}"
+        mode: 0755
+      with_items: "{{ facts_files }}"

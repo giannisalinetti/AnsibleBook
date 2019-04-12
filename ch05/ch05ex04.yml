@@ -1,20 +1,16 @@
----
-- hosts: localhost
+- hosts: all
+  vars_files:
+    - vars/user_vars.yaml
   vars:
-    topic: "music"
-
-  vars_prompt:
-    - name: "genre"
-      prompt: "Choose the musical genre"
-      private: no
-
-    - name: "artist"
-      prompt: "Choose the artist name"
-      private: no
-
+    secgroups: wheel
   tasks:
-    - name: Ensure directories are created
-      file:
-        path: "/tmp/{{ topic }}/{{ genre }}/{{ artist }}"
-        state: directory
-        mode: 0755
+    - name: Create user {{ username }}
+      user:
+        name: "{{ username }}"
+        comment: "{{ first_name }} {{ last_name }}"
+        shell: "{{ shell }}"
+        home: "{{ home }}"
+        groups: "{{ secgroups }}"
+        append: yes
+      vars:
+        secgroups: vagrant

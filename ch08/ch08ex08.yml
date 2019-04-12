@@ -14,7 +14,7 @@
         socket: /var/lib/haproxy/stats
         wait: yes
       delegate_to: "{{ item }}"
-      with_items: "{{ groups['lbserver'] }}"
+      loop: "{{ groups['lbserver'] }}"
 
     - name: Deploy new version of index.html
       template:
@@ -43,4 +43,4 @@
         socket: /var/lib/haproxy/stats
         wait: yes
       delegate_to: "{{ item }}"
-      with_items: "{{ groups['lbserver'] }}"
+      loop: "{{ groups['lbserver'] }}"
